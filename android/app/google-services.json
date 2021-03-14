@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "306790857662",
+    "project_id": "clubhouselite",
+    "storage_bucket": "clubhouselite.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:306790857662:android:e9011731becbe0e376d7ef",
+        "android_client_info": {
+          "package_name": "com.okays.clubHouseLite"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "306790857662-ah33633oomrg8cavt1lmt4tuhd4tq3p1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.okays.clubHouseLite",
+            "certificate_hash": "d13a8e4dfe945318250ec92c82057aa1be97a257"
+          }
+        },
+        {
+          "client_id": "306790857662-5gsjb2e6u6idmc5435enmu141h2h7d63.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbqsvYX1W0_9KM5GGRp2TxGCXyeeZEpRk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "306790857662-5gsjb2e6u6idmc5435enmu141h2h7d63.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
