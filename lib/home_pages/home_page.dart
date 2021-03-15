@@ -38,11 +38,10 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => toggleSwipeToMessage());
+    // WidgetsBinding.instance.addPostFrameCallback((_) => toggleSwipeToMessage());
   }
 
-  toggleSwipeToMessage() {
-    print("building_home_page_view");
+  toggleSwipeToMessage(int pageIndex) {
     if (pageIndex == 0) {
       Provider.of<FNMPageViewController>(context, listen: false)
           .setIsSwipeAblePage(true);
@@ -76,14 +75,18 @@ class _HomePageState extends State<HomePage> {
           onPageChanged: (index) {
             setState(() {
               homePageController.jumpToPage(index);
+              toggleSwipeToMessage(index);
               // homePageController.animateToPage(index,curve: Curves.bounceIn,duration: Duration(milliseconds: 500));
               pageIndex = index;
             });
           },
         ),
-        bottomNavigationBar: SizedBox(
-          height: 60,
+        bottomNavigationBar: Container(
+          height: 65,
+          color: appTheme.bottomNavBar,
+          padding: EdgeInsets.only(top: 10),
           child: CustomNavigationBar(
+            elevation: 0,
             currentIndex: pageIndex,
             bubbleCurve: Curves.bounceInOut,
             scaleCurve: Curves.decelerate,

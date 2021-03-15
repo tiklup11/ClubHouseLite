@@ -1,15 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:clubHouseLite/ChatGroups/chat_groups.dart';
-import 'package:clubHouseLite/Profile/profile.dart';
 import 'package:clubHouseLite/SearchFiles/searchedUser.dart';
 import 'package:clubHouseLite/SearchFiles/searched_user_card.dart';
 import 'package:clubHouseLite/constants/Constantcolors.dart';
-import 'package:clubHouseLite/home_pages/feed_and_msg_controller.dart';
 import 'package:clubHouseLite/home_pages/home_page.dart';
 import 'package:clubHouseLite/services/app_theme.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 class SearchPage extends StatefulWidget {
@@ -21,35 +17,20 @@ class _SearchPageState extends State<SearchPage> {
   Future<QuerySnapshot> searchedUser;
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => toggleSwipeToMessage());
-  }
-
-  toggleSwipeToMessage() {
-    print("searchPage");
-    // Provider.of<FNMPageViewController>(context, listen: false)
-    // .setIsSwipeAblePage(false);
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Consumer<AppTheme>(
       builder: (context, appTheme, _) => Scaffold(
         appBar: AppBar(
-          // actions: [IconButton(icon: Icon(EvaIcons.search), onPressed: () {})],
           elevation: 0,
           automaticallyImplyLeading: true,
           centerTitle: true,
           backgroundColor: appTheme.bottomNavBar,
-
           title: RichText(
             text: TextSpan(
                 text: "Search",
                 style: TextStyle(
                     fontFamily: "Poppins",
-                    color: ConstantColors.whiteColor,
+                    color: appTheme.darkOnLight,
                     fontWeight: FontWeight.bold,
                     fontSize: 20),
                 children: <TextSpan>[
@@ -57,7 +38,7 @@ class _SearchPageState extends State<SearchPage> {
                     text: "er",
                     style: TextStyle(
                         fontFamily: "Poppins",
-                        color: appTheme.darkOnLight,
+                        color: appTheme.darkOnLight.withOpacity(0.6),
                         fontWeight: FontWeight.bold,
                         fontSize: 20),
                   )

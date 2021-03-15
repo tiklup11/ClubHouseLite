@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class FNMPageViewController extends ChangeNotifier {
   //search and profile can't swipe to chat
-  bool isSwipeAblePage = false;
+  bool isSwipeAblePage = true;
   PageController pageViewController = PageController(initialPage: 0);
 
   jumpToPage(int value) {

@@ -67,25 +67,15 @@ class _UserFeedState extends State<UserFeed> {
       builder: (context, appTheme, _) => Scaffold(
           drawer: FeedWidgets.customDrawer(context),
           appBar: AppBar(
+            leading: Builder(
+              builder: (context) => IconButton(
+                icon: Icon(
+                  FontAwesomeIcons.buffer,
+                ),
+                onPressed: () => Scaffold.of(context).openDrawer(),
+              ),
+            ),
             iconTheme: IconThemeData(color: appTheme.msgIconColor),
-            // leading: appTheme.isLightTheme
-            //     ? IconButton(
-            //         onPressed: () {
-            //           appTheme.toggleTheme();
-            //         },
-            //         icon: Icon(
-            //           EvaIcons.sunOutline,
-            //           color: Colors.orange,
-            //         ),
-            //       )
-            //     : IconButton(
-            //         icon: Icon(
-            //           EvaIcons.moonOutline,
-            //           color: ConstantColors.blueColor,
-            //         ),
-            //         onPressed: () {
-            //           appTheme.toggleTheme();
-            //         }),
             actions: [
               Consumer<FNMPageViewController>(
                 builder: (context, fnM, _) => IconButton(
@@ -93,20 +83,11 @@ class _UserFeedState extends State<UserFeed> {
                     fnM.jumpToPage(1);
                   },
                   icon: Icon(
-                    EvaIcons.messageCircleOutline,
+                    FontAwesomeIcons.facebookMessenger,
                     color: appTheme.msgIconColor,
                   ),
                 ),
               ),
-              // IconButton(
-              //   onPressed: () {
-              //     showSelectImageBottomSheet(context);
-              //   },
-              //   icon: Icon(
-              //     FontAwesomeIcons.camera,
-              //     color: appTheme.primaryColor,
-              //   ),
-              // )
             ],
             elevation: 0,
             automaticallyImplyLeading: true,

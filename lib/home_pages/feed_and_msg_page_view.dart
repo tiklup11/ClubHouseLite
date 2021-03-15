@@ -17,7 +17,10 @@ class FeedAndMessagePageView extends StatelessWidget {
     // pageViewController = new PageController(initialPage: 0);
     return Consumer<FNMPageViewController>(
       builder: (context, fnm, _) => PageView(
-        controller:fnm.pageViewController,
+        controller: fnm.pageViewController,
+        physics: fnm.isSwipeAblePage
+            ? AlwaysScrollableScrollPhysics()
+            : NeverScrollableScrollPhysics(),
         children: [
           HomePage(
             user: user,

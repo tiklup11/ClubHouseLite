@@ -17,7 +17,6 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
-    print("Building profile page");
     return Consumer<AppTheme>(
       builder: (context, appTheme, _) => Scaffold(
           backgroundColor: appTheme.backgroundColor,
@@ -42,7 +41,7 @@ class _ProfileState extends State<Profile> {
                   text: "My",
                   style: TextStyle(
                       fontFamily: "Poppins",
-                      color: ConstantColors.whiteColor,
+                      color: appTheme.darkOnLight,
                       fontWeight: FontWeight.bold,
                       fontSize: 20),
                   children: <TextSpan>[
@@ -50,7 +49,7 @@ class _ProfileState extends State<Profile> {
                       text: "Profile",
                       style: TextStyle(
                           fontFamily: "Poppins",
-                          color: appTheme.darkOnLight,
+                          color: appTheme.darkOnLight.withOpacity(0.6),
                           fontWeight: FontWeight.bold,
                           fontSize: 20),
                     )
