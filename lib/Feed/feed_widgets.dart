@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:clubHouseLite/services/app_theme.dart';
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -105,7 +104,7 @@ class FeedWidgets {
                     ),
                   ),
                   iconBox(
-                    bgColor: appTheme.bnw.withOpacity(0.4),
+                    bgColor: ConstantColors.blueColor,
                     icon: Icon(
                       FontAwesomeIcons.upload,
                       color: ConstantColors.darkColor,
@@ -118,6 +117,14 @@ class FeedWidgets {
                       FontAwesomeIcons.bug,
                       color: ConstantColors.darkColor,
                       size: 28,
+                    ),
+                  ),
+                  iconBox(
+                    bgColor: Colors.blueAccent,
+                    icon: Icon(
+                      FontAwesomeIcons.signOutAlt,
+                      color: ConstantColors.darkColor,
+                      size: 30,
                     ),
                   ),
                 ],

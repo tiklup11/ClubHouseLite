@@ -10,7 +10,6 @@ class ProfileWidget {
     return Consumer<AppTheme>(
       builder: (context, appTheme, _) => Container(
         decoration: BoxDecoration(
-            // color: ConstantColors.lightColor,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10), topRight: Radius.circular(10))),
         width: MediaQuery.of(context).size.width,
@@ -23,25 +22,32 @@ class ProfileWidget {
               children: [
                 CircleAvatar(
                   backgroundColor: ConstantColors.darkColor,
-                  radius: 36,
+                  radius: 32,
                   backgroundImage: NetworkImage(currrentuser.photoURL),
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 Text(currrentuser.displayName,
-                    style: TextStyle(color: appTheme.bnw)),
+                    style: TextStyle(
+                        color: appTheme.bnw, fontWeight: FontWeight.bold)),
                 SizedBox(
-                  height: 3,
+                  height: 2,
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Icon(
                       EvaIcons.emailOutline,
                       color: ConstantColors.lightBlueColor,
                     ),
-                    Text(currrentuser.email,
-                        style: TextStyle(fontSize: 12, color: appTheme.bnw)),
+                    SizedBox(
+                      width: 140,
+                      child: Text(currrentuser.email,
+                          // maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(fontSize: 12, color: appTheme.bnw)),
+                    ),
                   ],
                 )
               ],
@@ -101,7 +107,7 @@ class ProfileWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
-          color: ConstantColors.whiteColor,
+          color: ConstantColors.greyColor,
           borderRadius: BorderRadius.circular(14)),
       height: 0.5,
     );
@@ -119,7 +125,7 @@ class ProfileWidget {
           Text(
             "No post posted",
             style: TextStyle(
-                color: ConstantColors.yellowColor,
+                color: Colors.deepOrange,
                 fontSize: 20,
                 fontWeight: FontWeight.bold),
           )
@@ -127,4 +133,6 @@ class ProfileWidget {
       ),
     );
   }
+
+
 }

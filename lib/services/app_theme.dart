@@ -13,8 +13,7 @@ class AppTheme extends ChangeNotifier {
   Color darkOnLight = ConstantColors
       .darkColor; //dark color on light-theme && blue color on darkTheme
   Color bnw = ConstantColors.darkColor;
-  // Color greyBackground = ConstantColors.
-  // blueGreyColor.withOpacity(0.6);
+  Color bottomSheetColor = ConstantColors.whiteColor.withOpacity(0.8);
 
   void toggleTheme() {
     if (isLightTheme) {
@@ -26,6 +25,7 @@ class AppTheme extends ChangeNotifier {
       bnw = ConstantColors.whiteColor;
       darkOnLight = ConstantColors.blueColor;
       msgIconColor = ConstantColors.whiteColor;
+      bottomSheetColor = ConstantColors.darkColor.withOpacity(0.9);
 
       isLightTheme = false;
       notifyListeners();
@@ -39,6 +39,7 @@ class AppTheme extends ChangeNotifier {
       primaryColor = ConstantColors.whiteColor;
       darkOnLight = ConstantColors.darkColor;
       msgIconColor = ConstantColors.blueColor;
+      bottomSheetColor = ConstantColors.whiteColor.withOpacity(0.8);
 
       isLightTheme = true;
       notifyListeners();

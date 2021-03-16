@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:clubHouseLite/home_pages/home_page.dart';
 import 'package:clubHouseLite/home_pages/feed_and_msg_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;

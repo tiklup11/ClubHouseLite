@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:clubHouseLite/ChatGroups/chat_groups.dart';
+import 'package:clubHouseLite/Event/event_view.dart';
 import 'package:clubHouseLite/Feed/feed.dart';
+import 'package:clubHouseLite/Profile/grid_view.dart';
 import 'package:clubHouseLite/Profile/profile.dart';
-import 'package:clubHouseLite/SearchFiles/message_page_view.dart';
-import 'package:clubHouseLite/SearchFiles/search_page.dart';
-import 'package:clubHouseLite/constants/Constantcolors.dart';
 import 'package:clubHouseLite/services/app_theme.dart';
 import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
@@ -65,12 +63,12 @@ class _HomePageState extends State<HomePage> {
             UserFeed(
               currentUser: widget.user,
             ),
-            // MessagePageView(),
-            SearchPage(),
-            // ChatGroups(),
+            EventView(),
+            // SearchPage(),
             Profile(
               currentUser: widget.user,
             ),
+            // PostGridView()
           ],
           onPageChanged: (index) {
             setState(() {
@@ -82,7 +80,7 @@ class _HomePageState extends State<HomePage> {
           },
         ),
         bottomNavigationBar: Container(
-          height: 65,
+          height: 57,
           color: appTheme.bottomNavBar,
           padding: EdgeInsets.only(top: 10),
           child: CustomNavigationBar(
@@ -95,7 +93,7 @@ class _HomePageState extends State<HomePage> {
             unSelectedColor: appTheme.unSelectedIcon,
             strokeColor: appTheme.selectedIcon,
             scaleFactor: 0.5,
-            iconSize: 34.0,
+            iconSize: 26.0,
             onTap: (index) {
               setState(() {
                 homePageController.jumpToPage(index);
@@ -103,16 +101,18 @@ class _HomePageState extends State<HomePage> {
               });
             },
             backgroundColor: appTheme.bottomNavBar,
-            // backgroundColor: Color(0xFF040307),
             items: [
-              CustomNavigationBarItem(icon: Icon(EvaIcons.home)),
               CustomNavigationBarItem(
                   icon: Icon(
-                FontAwesomeIcons.search,
-                size: 27,
+                EvaIcons.home,
+                size: 29,
+              )),
+              CustomNavigationBarItem(
+                  icon: Icon(
+                FontAwesomeIcons.cameraRetro,
               )),
               // CustomNavigationBarItem(icon: Icon(EvaIcons.messageCircle)),
-              CustomNavigationBarItem(icon: Icon(EvaIcons.person)),
+              CustomNavigationBarItem(icon: Icon(FontAwesomeIcons.userCircle)),
             ],
           ),
         ),

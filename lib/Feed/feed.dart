@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:clubHouseLite/ChatGroups/chat_groups.dart';
 import 'package:clubHouseLite/Feed/feed_widgets.dart';
 import 'package:clubHouseLite/Feed/post.dart';
 import 'package:clubHouseLite/Feed/post_widget.dart';
@@ -9,7 +8,6 @@ import 'package:clubHouseLite/constants/Constantcolors.dart';
 import 'package:clubHouseLite/home_pages/feed_and_msg_controller.dart';
 import 'package:clubHouseLite/home_pages/home_page.dart';
 import 'package:clubHouseLite/services/app_theme.dart';
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,14 +17,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as Im;
-import 'package:page_transition/page_transition.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class UserFeed extends StatefulWidget {
-  User currentUser;
+  final User currentUser;
   UserFeed({this.currentUser});
   @override
   _UserFeedState createState() => _UserFeedState();
@@ -47,7 +44,6 @@ class _UserFeedState extends State<UserFeed> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getAllPosts();
     postImagePicker = new ImagePicker();
@@ -55,7 +51,6 @@ class _UserFeedState extends State<UserFeed> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     captionEditingController.dispose();
     locationEditingController.dispose();
@@ -147,6 +142,8 @@ class _UserFeedState extends State<UserFeed> {
 
   buildFeed() {
     return ListView.builder(
+      cacheExtent: 20,
+      physics: BouncingScrollPhysics(),
       itemCount: allPostList.length,
       itemBuilder: (context, index) {
         return allPostList[index];
@@ -158,55 +155,57 @@ class _UserFeedState extends State<UserFeed> {
     return showModalBottomSheet(
         context: context,
         builder: (context) {
-          return Container(
-            height: MediaQuery.of(context).size.height * 0.1,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: ConstantColors.blueGreyColor),
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 150),
-                  child: Divider(
-                    color: ConstantColors.whiteColor,
-                    thickness: 4,
+          return Consumer<AppTheme>(
+            builder: (context, apptheme, _) => Container(
+              height: MediaQuery.of(context).size.height * 0.1,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: apptheme.bottomSheetColor),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 150),
+                    child: Divider(
+                      color: ConstantColors.whiteColor,
+                      thickness: 4,
+                    ),
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    MaterialButton(
-                      onPressed: () {
-                        _handleChossePhotoFroGallery();
-                        Navigator.pop(context);
-                      },
-                      color: ConstantColors.blueColor,
-                      child: Text(
-                        "Gallery",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: ConstantColors.whiteColor),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      MaterialButton(
+                        onPressed: () {
+                          _handleChossePhotoFroGallery();
+                          Navigator.pop(context);
+                        },
+                        color: ConstantColors.blueColor,
+                        child: Text(
+                          "Gallery",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: ConstantColors.whiteColor),
+                        ),
                       ),
-                    ),
-                    MaterialButton(
-                      onPressed: () {
-                        _handleTakePhoto();
-                        Navigator.pop(context);
-                      },
-                      color: ConstantColors.blueColor,
-                      child: Text(
-                        "Camera",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: ConstantColors.whiteColor),
+                      MaterialButton(
+                        onPressed: () {
+                          _handleTakePhoto();
+                          Navigator.pop(context);
+                        },
+                        color: ConstantColors.blueColor,
+                        child: Text(
+                          "Camera",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: ConstantColors.whiteColor),
+                        ),
                       ),
-                    ),
-                  ],
-                )
-              ],
+                    ],
+                  )
+                ],
+              ),
             ),
           );
         });
@@ -271,71 +270,73 @@ class _UserFeedState extends State<UserFeed> {
         isScrollControlled: true,
         context: context,
         builder: (context) {
-          return Container(
-            padding: EdgeInsets.only(bottom: 10),
-            height: 400,
-            // height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: ConstantColors.blueGreyColor),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 150, vertical: 10),
-                  decoration: BoxDecoration(
-                      color: ConstantColors.whiteColor,
-                      borderRadius: BorderRadius.circular(10)),
-                  height: 6,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: ConstantColors.transperant),
-                  child: Image(
-                    fit: BoxFit.fill,
-                    loadingBuilder: (BuildContext context, Widget child,
-                        ImageChunkEvent loadingProgress) {
-                      return Center(child: child);
-                    },
-                    image: FileImage(
-                      uploadPostFile,
-                    ),
-                    height: 250,
+          return Consumer<AppTheme>(
+            builder: (context, appTheme, _) => Container(
+              padding: EdgeInsets.only(bottom: 10),
+              height: 400,
+              // height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: appTheme.bottomSheetColor),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 150, vertical: 10),
+                    decoration: BoxDecoration(
+                        color: ConstantColors.whiteColor,
+                        borderRadius: BorderRadius.circular(10)),
+                    height: 6,
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    MaterialButton(
-                      onPressed: _handleChossePhotoFroGallery,
-                      // color: ConstantColors.whiteColor,
-                      child: Text(
-                        "ReSelect",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: ConstantColors.whiteColor),
-                      ),
-                    ),
-                    MaterialButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        showFinalPostSheet(context);
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: ConstantColors.transperant),
+                    child: Image(
+                      fit: BoxFit.fill,
+                      loadingBuilder: (BuildContext context, Widget child,
+                          ImageChunkEvent loadingProgress) {
+                        return Center(child: child);
                       },
-                      color: ConstantColors.blueColor,
-                      child: Text(
-                        "Confirm",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: ConstantColors.whiteColor),
+                      image: FileImage(
+                        uploadPostFile,
                       ),
+                      height: 250,
                     ),
-                  ],
-                )
-              ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      MaterialButton(
+                        onPressed: _handleChossePhotoFroGallery,
+                        // color: ConstantColors.whiteColor,
+                        child: Text(
+                          "ReSelect",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: ConstantColors.whiteColor),
+                        ),
+                      ),
+                      MaterialButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          showFinalPostSheet(context);
+                        },
+                        color: ConstantColors.blueColor,
+                        child: Text(
+                          "Confirm",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: ConstantColors.whiteColor),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           );
         });
@@ -346,173 +347,177 @@ class _UserFeedState extends State<UserFeed> {
         isScrollControlled: true,
         context: context,
         builder: (context) {
-          return StatefulBuilder(
-            builder: (BuildContext context, StateSetter setSheet) => Container(
-              height: MediaQuery.of(context).size.height * 0.85,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                  color: ConstantColors.blueGreyColor,
-                  borderRadius: BorderRadius.circular(12)),
-              child: Column(
-                children: [
+          return Consumer<AppTheme>(
+            builder: (context, appTheme, _) => StatefulBuilder(
+              builder: (BuildContext context, StateSetter setSheet) =>
                   Container(
-                    padding: EdgeInsets.only(top: 20),
-                    margin: EdgeInsets.symmetric(horizontal: 150, vertical: 10),
-                    decoration: BoxDecoration(
-                        color: ConstantColors.whiteColor,
-                        borderRadius: BorderRadius.circular(10)),
-                    height: 6,
-                  ),
-                  FeedWidgets.finalImagePreviewToUser(file: uploadPostFile),
-                  Divider(
-                    height: 30,
-                  ),
-                  //location
-                  Row(
-                    children: [
-                      SizedBox(
-                        height: 30,
-                        width: 30,
-                        child: Image.asset('assets/images/location.jpg'),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 6),
-                        height: 30,
-                        width: 5,
-                        color: ConstantColors.blueColor,
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 10),
-                        height: 30,
-                        width: 330,
-                        child: TextField(
-                          textCapitalization: TextCapitalization.words,
-                          maxLengthEnforced: true,
-                          controller: locationEditingController,
-                          style: TextStyle(
-                              color: ConstantColors.whiteColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16),
-                          decoration: InputDecoration(
-                            hintText: "Enter photo location",
-                            hintStyle: TextStyle(
+                height: MediaQuery.of(context).size.height * 0.85,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                    color: appTheme.bottomSheetColor,
+                    borderRadius: BorderRadius.circular(12)),
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(top: 20),
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 150, vertical: 10),
+                      decoration: BoxDecoration(
+                          color: ConstantColors.whiteColor,
+                          borderRadius: BorderRadius.circular(10)),
+                      height: 6,
+                    ),
+                    FeedWidgets.finalImagePreviewToUser(file: uploadPostFile),
+                    Divider(
+                      height: 30,
+                    ),
+                    //location
+                    Row(
+                      children: [
+                        SizedBox(
+                          height: 30,
+                          width: 30,
+                          child: Image.asset('assets/images/location.jpg'),
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 6),
+                          height: 30,
+                          width: 5,
+                          color: ConstantColors.blueColor,
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 10),
+                          height: 30,
+                          width: 330,
+                          child: TextField(
+                            textCapitalization: TextCapitalization.words,
+                            maxLengthEnforced: true,
+                            controller: locationEditingController,
+                            style: TextStyle(
                                 color: ConstantColors.whiteColor,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16),
-                          ),
-                          cursorWidth: 4,
-                          cursorHeight: 20,
-                          maxLines: 1,
-                        ),
-                      )
-                    ],
-                  ),
-                  Divider(
-                    height: 20,
-                  ), //caption row
-                  Row(
-                    children: [
-                      SizedBox(
-                        height: 30,
-                        width: 30,
-                        child: Image.asset('assets/images/sun.png'),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 6),
-                        height: 110,
-                        width: 5,
-                        color: ConstantColors.blueColor,
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 10),
-                        height: 120,
-                        width: 330,
-                        child: TextField(
-                          textCapitalization: TextCapitalization.sentences,
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(100),
-                          ],
-                          maxLength: 100,
-                          maxLengthEnforced: true,
-                          controller: captionEditingController,
-                          style: TextStyle(
-                              color: ConstantColors.whiteColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16),
-                          decoration: InputDecoration(
-                            hintText: "Add a caption..",
-                            hintStyle: TextStyle(
-                                color: ConstantColors.whiteColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
-                          ),
-                          cursorWidth: 4,
-                          cursorHeight: 22,
-                          maxLines: 3,
-                        ),
-                      )
-                    ],
-                  ),
-                  Divider(
-                    height: 20,
-                  ),
-                  isUploadingPost
-                      ? Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                                height: 180,
-                                width: 200,
-                                child: Image.asset('assets/gifs/pica.gif')),
-                            Text(
-                              "Uploading..",
-                              style: TextStyle(
+                            decoration: InputDecoration(
+                              hintText: "Enter photo location",
+                              hintStyle: TextStyle(
+                                  color: ConstantColors.whiteColor,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: Colors.orangeAccent),
-                            )
-                          ],
+                                  fontSize: 16),
+                            ),
+                            cursorWidth: 4,
+                            cursorHeight: 20,
+                            maxLines: 1,
+                          ),
                         )
-                      : //material buttons [cancel] & [Post]
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            MaterialButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              // color: ConstantColors.whiteColor,
-                              child: Text(
-                                "Cancel",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    color: ConstantColors.whiteColor),
-                              ),
-                            ),
-                            MaterialButton(
-                              onPressed: isUploadingPost
-                                  ? null
-                                  : () {
-                                      setSheet(() {
-                                        isUploadingPost = true;
-                                        print(
-                                            "isUpload-------$isUploadingPost");
-                                      });
-                                      _handlePostSubmit();
-                                    },
-                              color: ConstantColors.blueColor,
-                              child: Text(
-                                "Post",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    color: ConstantColors.whiteColor),
-                              ),
-                            ),
-                          ],
+                      ],
+                    ),
+                    Divider(
+                      height: 20,
+                    ), //caption row
+                    Row(
+                      children: [
+                        SizedBox(
+                          height: 30,
+                          width: 30,
+                          child: Image.asset('assets/images/sun.png'),
                         ),
-                ],
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 6),
+                          height: 110,
+                          width: 5,
+                          color: ConstantColors.blueColor,
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 10),
+                          height: 120,
+                          width: 330,
+                          child: TextField(
+                            textCapitalization: TextCapitalization.sentences,
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(100),
+                            ],
+                            maxLength: 100,
+                            maxLengthEnforced: true,
+                            controller: captionEditingController,
+                            style: TextStyle(
+                                color: ConstantColors.whiteColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16),
+                            decoration: InputDecoration(
+                              hintText: "Add a caption..",
+                              hintStyle: TextStyle(
+                                  color: ConstantColors.whiteColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
+                            ),
+                            cursorWidth: 4,
+                            cursorHeight: 22,
+                            maxLines: 3,
+                          ),
+                        )
+                      ],
+                    ),
+                    Divider(
+                      height: 20,
+                    ),
+                    isUploadingPost
+                        ? Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                  height: 180,
+                                  width: 200,
+                                  child: Image.asset('assets/gifs/pica.gif')),
+                              Text(
+                                "Uploading..",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: Colors.orangeAccent),
+                              )
+                            ],
+                          )
+                        : //material buttons [cancel] & [Post]
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              MaterialButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                // color: ConstantColors.whiteColor,
+                                child: Text(
+                                  "Cancel",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      color: ConstantColors.whiteColor),
+                                ),
+                              ),
+                              MaterialButton(
+                                onPressed: isUploadingPost
+                                    ? null
+                                    : () {
+                                        setSheet(() {
+                                          isUploadingPost = true;
+                                          print(
+                                              "isUpload-------$isUploadingPost");
+                                        });
+                                        _handlePostSubmit();
+                                      },
+                                color: ConstantColors.blueColor,
+                                child: Text(
+                                  "Post",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      color: ConstantColors.whiteColor),
+                                ),
+                              ),
+                            ],
+                          ),
+                  ],
+                ),
               ),
             ),
           );
@@ -541,6 +546,8 @@ class _UserFeedState extends State<UserFeed> {
       photoUrl: photoUrl,
       blurHash: blurHash,
     );
+
+    getAllPosts();
   }
 
   Future<String> uplaodImageToFirestore(imageFile) async {

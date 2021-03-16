@@ -1,13 +1,12 @@
 import 'package:clubHouseLite/Feed/post.dart';
 import 'package:clubHouseLite/constants/Constantcolors.dart';
+import 'package:clubHouseLite/custom_insta_love/custom_insta_love.dart';
 import 'package:clubHouseLite/services/app_theme.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
-import 'package:flutter_button/flutter_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:provider/provider.dart';
 import 'package:clubHouseLite/home_pages/home_page.dart';
 
@@ -65,20 +64,21 @@ class PostCard extends StatelessWidget {
                             ),
                             RichText(
                               text: TextSpan(
-                                  text: "${postData.location},",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: ConstantColors.blueColor,
-                                      fontFamily: "Poppins",
-                                      fontSize: 12),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                        text: "   10 Hours ago.",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: ConstantColors.lightColor
-                                                .withOpacity(0.8)))
-                                  ]),
+                                text: "${postData.location},",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: ConstantColors.blueColor,
+                                    fontFamily: "Poppins",
+                                    fontSize: 12),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                      text: "   10 Hours ago.",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: ConstantColors.lightColor
+                                              .withOpacity(0.8)))
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -89,12 +89,12 @@ class PostCard extends StatelessWidget {
               ],
             ),
             Container(
-              height: MediaQuery.of(context).size.width,
-              width: MediaQuery.of(context).size.width,
-              child: BlurHash(
-                hash: postData.blurHash,
-                image: postData.postUrl,
-                imageFit: BoxFit.contain,
+              child: CustomInstaLoveButton(
+                icon: FontAwesomeIcons.heart,
+                iconColor: ConstantColors.redColor,
+                onTap: () {},
+                postUrl: postData.postUrl,
+                blurHash: postData.blurHash,
               ),
             ),
             Container(
